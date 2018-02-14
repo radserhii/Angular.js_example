@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="../node_modules/angular/angular.js" defer></script>
+    <script src="script/main.js" defer></script>
+</head>
+<body>
+<div class="wrapper" ng-class="{'app-loaded': true}">
+    <div ng-controller="PageController as sorting" class="sorting">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <button type="button" class="btn btn-light" ng-click=""><i class="fa fa-list-ul"></i></button>
+                <button type="button" class="btn btn-light" ng-click=""><i class="fa fa-th"></i></button>
+            </div>
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-light" ng-click="">price <i class="fa fa-arrow-up"></i></button>
+                <button type="button" class="btn btn-light" ng-click="">price <i class="fa fa-arrow-down"></i></button>
+            </div>
+            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                <button type="button" class="btn btn-light" ng-click="">name <i class="fa fa-arrow-up"></i></button>
+                <button type="button" class="btn btn-light" ng-click="">name <i class="fa fa-arrow-down"></i></button>
+            </div>
+        </div>
+    </div>
+    <div ng-controller="ProductsController as prod">
+        <div class="product" ng-repeat="product in prod.products">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="{{product.image}}" alt="{{product.name}}"
+                     style="width: 70%; height: auto; margin: 10px auto">
+                <div class="card-body">
+                    <h5 class="card-title">{{product.name}}</h5>
+                    <h6 class="card-subtitle">{{product.category}}</h6>
+                    <hr>
+                    <p class="card-text"><b>{{product.price}}</b> GRN</p>
+                    <hr>
+                    <p class="card-text">{{product.description}}</p>
+                    <a href="#" class="btn btn-primary" ng-show="product.available">Buy now</a>
+                    <button class="btn btn-light" disabled ng-hide="product.available">Unavailable</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
