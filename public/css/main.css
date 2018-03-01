@@ -1,7 +1,27 @@
 .sorting,
-.product {
+.list {
+  margin: 10px;
+}
+.list .card {
+  width: 100%;
+}
+.list .card .img-wrapper {
+  width: 10%;
+  float: left;
+}
+.list .card .img-wrapper .card-img-top {
   margin: 20px;
 }
-.product {
+.list .card .card-body {
+  width: 80%;
   float: left;
+}
+.product-th .card {
+  margin: 10px;
+  width: 20%;
+  float: left;
+}
+.product-th .card .img-wrapper {
+  width: 70%;
+  margin: 10px auto;
 }

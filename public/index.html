@@ -11,36 +11,129 @@
 </head>
 <body>
 <div class="wrapper" ng-class="{'app-loaded': true}">
-    <div ng-controller="PageController as sorting" class="sorting">
-        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" class="btn btn-light" ng-click=""><i class="fa fa-list-ul"></i></button>
-                <button type="button" class="btn btn-light" ng-click=""><i class="fa fa-th"></i></button>
-            </div>
-            <div class="btn-group mr-2" role="group" aria-label="First group">
-                <button type="button" class="btn btn-light" ng-click="">price <i class="fa fa-arrow-up"></i></button>
-                <button type="button" class="btn btn-light" ng-click="">price <i class="fa fa-arrow-down"></i></button>
-            </div>
-            <div class="btn-group mr-2" role="group" aria-label="Second group">
-                <button type="button" class="btn btn-light" ng-click="">name <i class="fa fa-arrow-up"></i></button>
-                <button type="button" class="btn btn-light" ng-click="">name <i class="fa fa-arrow-down"></i></button>
-            </div>
+    <nav class="navbar navbar-light bg-light justify-content-end">
+        <form name="promoForm" class="form-inline" ng-controller="PromoController as promoCtrl"
+              ng-submit="promoForm.$valid && promoCtrl.checkPromo()" novalidate>
+            <input class="form-control mr-sm-2" type="search" ng-model="promoCtrl.code" placeholder="Promocode" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Send</button>
+        </form>
+        <div ng-controller="ShopCartController as cart">
+            <button class="btn btn-info" ng-click="cart.addItems()"><i class="fa fa-shopping-cart"></i>
+                <span ng-hide="cart.items">no products</span>
+                <span ng-show="cart.items">{{cart.showItems()}}</span>
+            </button>
+            <button class="btn btn-info" ng-show="cart.items" ng-click="cart.cleanItems()">Clean</button>
         </div>
-    </div>
-    <div ng-controller="ProductsController as prod">
-        <div class="product" ng-repeat="product in prod.products">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{product.image}}" alt="{{product.name}}"
-                     style="width: 70%; height: auto; margin: 10px auto">
-                <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5>
-                    <h6 class="card-subtitle">{{product.category}}</h6>
-                    <hr>
-                    <p class="card-text"><b>{{product.price}}</b> GRN</p>
-                    <hr>
-                    <p class="card-text">{{product.description}}</p>
-                    <a href="#" class="btn btn-primary" ng-show="product.available">Buy now</a>
-                    <button class="btn btn-light" disabled ng-hide="product.available">Unavailable</button>
+    </nav>
+    <br>
+    <div class="container">
+        <div ng-controller="PageController as sorting">
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-light" ng-click="sorting.sort='list'"><i
+                            class="fa fa-list-ul"></i></button>
+                    <button type="button" class="btn btn-light" ng-click="sorting.sort='product-th'"><i
+                            class="fa fa-th"></i></button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-light" ng-click="order='price'">price <i
+                            class="fa fa-arrow-up"></i></button>
+                    <button type="button" class="btn btn-light" ng-click="order='-price'">price <i
+                            class="fa fa-arrow-down"></i></button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-light" ng-click="order='name'">name <i
+                            class="fa fa-arrow-up"></i></button>
+                    <button type="button" class="btn btn-light" ng-click="order='-name'">name <i
+                            class="fa fa-arrow-down"></i></button>
+                </div>
+            </div>
+
+            <div ng-controller="ProductsController as prod">
+                <div ng-class='sorting.sort' ng-repeat="product in prod.products | orderBy:order">
+                    <div class="card">
+                        <div class="img-wrapper">
+                            <img class="card-img-top" src="{{product.image}}" alt="{{product.name}}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{product.name}}</h5>
+                            <h6 class="card-subtitle">{{product.category}}</h6>
+                            <hr>
+                            <p class="card-text"><b>{{product.price}}</b> GRN</p>
+                            <hr>
+                            <p class="card-text">{{product.description}}</p>
+
+                            <div class="spec">
+                                <h4>Specifications</h4>
+
+                                <blockquote ng-repeat="spec in product.specs">
+                                    <p>Weight: {{ spec.weight }}</p>
+                                    <p><b>Country: {{ spec.country }}</b></p>
+                                    <p>Number of facets: {{ spec.facets}}</p>
+                                    <p><i>Technical description: {{ spec.description}}</i></p>
+                                    <p ng-show="spec.nice">Its very NICE!!!</p>
+                                    <p ng-show="spec.sex">Sex: {{spec.sex}}</p>
+                                </blockquote>
+
+                                <form name="specForm" ng-controller="SpecificationsController as specCtrl"
+                                      ng-submit="specForm.$valid && specCtrl.addSpec(product)" novalidate>
+
+                                    <fieldset class="form-group">
+                                        <input
+                                                class="form-control"
+                                                ng-model="specCtrl.spec.weight"
+                                                type="number"
+                                                placeholder="weight"
+                                                required
+                                        />
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <input
+                                                class="form-control"
+                                                ng-model="specCtrl.spec.country"
+                                                type="text"
+                                                placeholder="country"
+                                                required
+                                        />
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <select class="form-control" ng-model="specCtrl.spec.facets"
+                                                ng-options="facets for facets in [5,4,3,2,1]" required>
+                                            <option value="">Number of facets</option>
+                                        </select>
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                <textarea
+                                        class="form-control"
+                                        ng-model="specCtrl.spec.description"
+                                        placeholder="Write a short technical description..."
+                                        required></textarea>
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <input type="checkbox" ng-model="specCtrl.spec.nice"/> Nice?
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <input type="radio" name="sex" value="Male" ng-model="specCtrl.spec.sex"/> Male
+                                        <input type="radio" name="sex" value="Female" ng-model="specCtrl.spec.sex"/>
+                                        Female
+                                    </fieldset>
+
+                                    <fieldset class="form-group">
+                                        <input class="btn btn-dark" type="submit" value="Send specification"/>
+                                    </fieldset>
+                                </form>
+                            </div>
+
+
+                            <a href="#" class="btn btn-primary" ng-show="product.available">Buy now</a>
+                            <button class="btn btn-light" disabled ng-hide="product.available">Unavailable</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
