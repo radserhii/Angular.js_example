@@ -12,17 +12,20 @@
 <body>
 <div class="wrapper" ng-class="{'app-loaded': true}">
     <nav class="navbar navbar-light bg-light justify-content-end">
-        <form name="promoForm" class="form-inline" ng-controller="PromoController as promoCtrl"
-              ng-submit="promoForm.$valid && promoCtrl.checkPromo()" novalidate>
-            <input class="form-control mr-sm-2" type="search" ng-model="promoCtrl.code" placeholder="Promocode" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Send</button>
-        </form>
+        <div class="promo-form">
+            <form name="promoForm" class="form-inline" ng-controller="PromoController as promoCtrl"
+                  ng-submit="promoForm.$valid && promoCtrl.checkPromo()" novalidate>
+                <input class="form-control mr-sm-2" type="search" ng-model="promoCtrl.code" placeholder="Promocode (1234)"
+                       aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Send</button>
+            </form>
+        </div>
         <div ng-controller="ShopCartController as cart">
             <button class="btn btn-info" ng-click="cart.addItems()"><i class="fa fa-shopping-cart"></i>
-                <span ng-hide="cart.items">no products</span>
-                <span ng-show="cart.items">{{cart.showItems()}}</span>
+                <span ng-hide="cart.showItems()">no products</span>
+                <span ng-show="cart.showItems()">{{cart.showItems()}}</span>
             </button>
-            <button class="btn btn-info" ng-show="cart.items" ng-click="cart.cleanItems()">Clean</button>
+            <button class="btn btn-info" ng-show="cart.showItems()" ng-click="cart.cleanItems()">Clean</button>
         </div>
     </nav>
     <br>

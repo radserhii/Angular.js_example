@@ -41,36 +41,57 @@ app.controller('PageController', function ($scope) {
 app.controller('SpecificationsController', function ($scope) {
     this.spec = {};
 
-    this.addSpec= function(product){
+    this.addSpec = function (product) {
         product.specs.push(this.spec);
         this.spec = {};
     };
 });
 
-app.controller("ShopCartController", function ($rootScope) {
+// app.controller("ShopCartController", function ($rootScope) {
+//
+//     this.items = 0;
+//
+//     this.addItems = function () {
+//         this.items++;
+//     };
+//
+//     this.cleanItems = function () {
+//         this.items = 0;
+//     };
+//
+//     this.showItems = function () {
+//         return this.items;
+//     }
+// });
 
-    this.items = 0;
+app.controller("ShopCartController", function ($rootScope, $timeout) {
+
+
+    $timeout(function () {
+        $rootScope.items = 0;
+    }, 200);
 
     this.addItems = function () {
-        this.items++;
+        $rootScope.items++;
     };
 
     this.cleanItems = function () {
-        this.items = 0;
+        $rootScope.items = 0;
     };
 
     this.showItems = function () {
-        return this.items;
+        return $rootScope.items;
     }
 });
 
-app.controller("PromoController", function ($scope) {
+
+app.controller("PromoController", function ($rootScope) {
 
     const truePromocode = 1234;
 
     this.checkPromo = function () {
         if (+this.code === truePromocode) {
-            console.log(this.code);
+            $rootScope.items*=2;
         }
     };
 });
